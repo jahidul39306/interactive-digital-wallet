@@ -30,6 +30,7 @@
             $category = $_POST["category"];
             $amount = $_POST["amount"];
             $to = $_POST["to"];
+            echo "<script></script>";
             $msg = "Transaction Successful";
         }
     }
@@ -78,7 +79,7 @@
 
         <button type="submit" name="submitButton">Submit</button>
         <br><br>
-        <div id = "result"></div>
+        <div id = "result" style="color:green"></div>
         <p><?php echo $msg; ?></p>
     </form>
 

@@ -4,7 +4,7 @@ require "DBconnect.php";
 function getHistory()
 {
     $conn = connect();
-    $sql = $conn->prepare("SELECT * FROM digital-wallet");
+    $sql = $conn->prepare("SELECT * FROM history");
     $sql->execute();
     $res = $sql->get_result();
     return $res->fetch_all(MYSQLI_ASSOC);
@@ -12,14 +12,25 @@ function getHistory()
 
 function addHistory($categoryType, $to, $amount)
 {
-    echo $categoryType;
-    echo $to;
-    echo $amount;
     $date = new DateTime();
-    $time = $date->format("Y-m-d H:i:s");
+    $date = $date->format("Y-m-d");
+    $time = strval(date("h:i:s"));
     $conn = connect();
-    $sql = $conn->prepare("INSERT INTO digital-wallet (categoryType, to, date, amount) VALUES (?, ?, ?, ?)");
-    $sql->bind_param("ssss", strval($categoryType), strval($to), strval($time), strval($amount));
-    return $sql->execute();
+    $sql = $conn->prepare("INSERT INTO history (category, reciever, date, amount, time) VALUES (?, ?, ?, ?, ?)");
+    $sql->bind_param("sssss", $categoryType, $to, $date, $amount, $time);
+    if($sql->execute())
+    {
+        echo "Transaction successful";
+    }
+}
+
+function searchHistory($search)
+{
+    $conn = connect();
+    $sql = $conn->prepare("SELECT * FROM history WHERE date = ? OR time = ?");
+    $sql->bind_param("ss", $search, $search);
+    $sql->execute();
+    $res = $sql->get_result();
+    return $res->fetch_all(MYSQLI_ASSOC);
 }
 ?>

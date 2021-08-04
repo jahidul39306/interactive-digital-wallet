@@ -64,7 +64,7 @@ function addHistoryJS(categoryType, to, amount)
 function getHistory()
 {
     var XML = new XMLHttpRequest();
-
+    console.log("jillllo");
     XML.onload = function()
     {
         if(XML.status === 200)
@@ -75,4 +75,20 @@ function getHistory()
     XML.open("POST", "showHistory.php", true);
     XML.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     XML.send();
+}
+
+function searchHistory()
+{
+    var search = document.forms["historyForm"]["search"].value;
+    var XML = new XMLHttpRequest();
+    XML.onload = function()
+    {
+        if(XML.status === 200)
+        {
+            document.getElementById("historyTable").innerHTML = XML.responseText;
+        }
+    }
+    XML.open("POST", "searchHistory.php", true);
+    XML.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    XML.send("search=" +search);
 }
